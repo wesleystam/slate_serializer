@@ -1,6 +1,6 @@
+require 'slate_serializer/plain'
 require 'slate_serializer/version'
 
+# Main module
 module SlateSerializer
-  class Error < StandardError; end
-  # Your code goes here...
 end
