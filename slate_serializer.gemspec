@@ -7,9 +7,9 @@ Gem::Specification.new do |spec|
   spec.version       = SlateSerializer::VERSION
   spec.authors       = ['Wesley Stam']
   spec.email         = ['wesley@stam.me']
+  spec.license       = "MIT"
 
   spec.summary       = 'Serializer for Slate documents written in Ruby'
-  spec.description   = spec.summary
   spec.homepage      = 'https://github.com/wesleystam/slate_serializer'
 
   # Specify which files should be added to the gem when it is released.
