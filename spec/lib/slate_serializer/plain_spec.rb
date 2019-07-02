@@ -17,8 +17,26 @@ RSpec.describe SlateSerializer::Plain do
     )
 
     context 'when the text is nil' do
-      it 'return a empty hash' do
-        expect(described_class.deserializer(nil)).to eq({})
+      it 'return a empty state' do
+        expect(described_class.deserializer(nil)).to eq(
+          document: {
+            object: 'document',
+            nodes: [
+              {
+                data: {},
+                object: 'block',
+                type: 'paragraph',
+                nodes: [
+                  {
+                    marks: [],
+                    object: 'text',
+                    text: ''
+                  }
+                ]
+              }
+            ]
+          }
+        )
       end
     end
 

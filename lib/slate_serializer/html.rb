@@ -40,7 +40,7 @@ module SlateSerializer
       # @option options [Array] :inline_elemnts List of inline types
       # @option options [Array] :mark_elemnts List of mark types
       def deserializer(html, options = {})
-        return {} if html.nil?
+        return empty_state if html.nil?
 
         self.elements = options[:elements] || ELEMENTS
         self.block_elements = options[:block_elements] || BLOCK_ELEMENTS
@@ -150,6 +150,28 @@ module SlateSerializer
 
       def inline?(element)
         inline_elements.include?(element.name)
+      end
+
+      def empty_state
+        {
+          document: {
+            object: 'document',
+            nodes: [
+              {
+                data: {},
+                object: 'block',
+                type: 'paragraph',
+                nodes: [
+                  {
+                    marks: [],
+                    object: 'text',
+                    text: ''
+                  }
+                ]
+              }
+            ]
+          }
+        }
       end
     end
   end
