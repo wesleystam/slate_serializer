@@ -58,14 +58,8 @@ module SlateSerializer
             data: {},
             nodes: [
               object: 'text',
-              data: {},
-              leaves: [
-                {
-                  object: 'leaf',
-                  text: line,
-                  marks: []
-                }
-              ]
+              text: line,
+              marks: []
             ]
           }
         end
@@ -75,7 +69,7 @@ module SlateSerializer
         if node[:object] == 'document' || node[:object] == 'block'
           node[:nodes].map { |n| serialize_node(n, options) }.join(options[:delimiter])
         else
-          node[:leaves].map { |l| l[:text] }.join(' ')
+          node[:text]
         end
       end
     end

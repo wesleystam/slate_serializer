@@ -7,7 +7,7 @@ RSpec.describe SlateSerializer::Html do
     Description of the issue</p><p>Decision-making
     processes and structures conducive to social responsibility are those that
     promote the practical use of the principles and practices described in Clauses
-    4 and 5.&nbsp;<a href="http://wetten.overheid.nl/BWBR0023864/2018-01-01/0/Hoofdstuk3a/Artikel15b/informatie">overzicht van wijzigingen</a></p><ul>
+    4 and 5.&nbsp;<a href="http://wetten.overheid.nl/BWBR0023864/2018-01-01/0/Hoofdstuk3a/Artikel15b/informatie">overzicht van <strong>wijzigingen</strong></a></p><ul>
     <li>promote fair representation of
     under-represented groups including women and racial and ethnic groups in
     senior positions in the organization;</li></ul>
@@ -28,10 +28,10 @@ RSpec.describe SlateSerializer::Html do
         expect(raw[:document][:nodes][2][:nodes][0][:type]).to eq 'list-item'
 
         expect(raw[:document][:nodes][3][:type]).to eq 'paragraph'
-        expect(raw[:document][:nodes][3][:nodes].length).to be 1
+        expect(raw[:document][:nodes][3][:nodes].length).to be 2
         expect(raw[:document][:nodes][3][:nodes][0][:object]).to eq 'text'
-        expect(raw[:document][:nodes][3][:nodes][0][:leaves].length).to be 2
-        expect(raw[:document][:nodes][3][:nodes][0][:leaves][0][:marks][0][:type]).to eq 'bold'
+        expect(raw[:document][:nodes][3][:nodes][0][:marks][0][:type]).to eq 'bold'
+        expect(raw[:document][:nodes][3][:nodes][1][:marks][1][:type]).to eq 'italic'
       end
     end
   end

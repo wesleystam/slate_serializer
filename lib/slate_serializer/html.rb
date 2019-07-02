@@ -54,6 +54,7 @@ module SlateSerializer
 
         {
           document: {
+            object: 'document',
             nodes: nodes
           }
         }
@@ -66,7 +67,7 @@ module SlateSerializer
       def element_to_node(element)
         type = convert_name_to_type(element)
 
-        nodes = element.children.map do |child|
+        nodes = element.children.flat_map do |child|
           next if child.text.strip == '' && child.type == 'img'
 
           if block?(child)
@@ -76,7 +77,7 @@ module SlateSerializer
           else
             next if child.text.strip == ''
 
-            element_to_text(child)
+            element_to_texts(child)
           end
         end.compact
 
@@ -90,8 +91,8 @@ module SlateSerializer
 
       def element_to_inline(element)
         type = convert_name_to_type(element)
-        nodes = element.children.map do |child|
-          element_to_text(child)
+        nodes = element.children.flat_map do |child|
+          element_to_texts(child)
         end
 
         {
@@ -102,29 +103,26 @@ module SlateSerializer
         }
       end
 
-      def element_to_text(element)
-        leaves = []
+      def element_to_texts(element)
+        nodes = []
         mark = convert_name_to_mark(element.name)
 
         if element.class == Nokogiri::XML::Element
           element.children.each do |child|
-            leaves << element_to_leave(child, mark)
+            nodes << element_to_text(child, mark)
           end
         else
-          leaves << element_to_leave(element)
+          nodes << element_to_text(element)
         end
 
-        {
-          leaves: leaves,
-          object: 'text'
-        }
+        nodes
       end
 
-      def element_to_leave(element, mark = nil)
+      def element_to_text(element, mark = nil)
         marks = [mark, convert_name_to_mark(element.name)].compact
         {
           marks: marks,
-          object: 'leaf',
+          object: 'text',
           text: element.text
         }
       end

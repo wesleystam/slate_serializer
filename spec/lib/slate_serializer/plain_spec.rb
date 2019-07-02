@@ -29,7 +29,7 @@ RSpec.describe SlateSerializer::Plain do
         expect(raw[:document][:object]).to eq 'document'
         expect(raw[:document][:nodes].length).to be 4
         expect(raw[:document][:nodes][2][:type]).to eq 'paragraph'
-        expect(raw[:document][:nodes][2][:nodes][0][:leaves][0][:text]).to eq "3. Number three\nSome text on the next line"
+        expect(raw[:document][:nodes][2][:nodes][0][:text]).to eq "3. Number three\nSome text on the next line"
       end
     end
   end
@@ -51,19 +51,14 @@ RSpec.describe SlateSerializer::Plain do
                 object: 'block',
                 type: 'paragraph',
                 nodes: [
-                  leaves: [
-                    { text: 'Some text' },
-                    { text: 'and lalala' }
-                  ]
+                  { text: 'Some text and lalala' }
                 ]
               },
               {
                 object: 'block',
                 type: 'paragraph',
                 nodes: [
-                  leaves: [
-                    { text: 'Next line' }
-                  ]
+                  { text: 'Next line' }
                 ]
               }
             ]
