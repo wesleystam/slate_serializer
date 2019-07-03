@@ -118,5 +118,19 @@ RSpec.describe SlateSerializer::Html do
         expect(raw[:document][:nodes][1][:nodes][0][:type]).to eq 'image'
       end
     end
+
+    context 'empty p element' do
+      html = %(
+        <p></p>
+      )
+
+      it 'converts the html into raw' do
+        raw = described_class.deserializer(html)
+
+        expect(raw[:document][:nodes].length).to be 1
+        expect(raw[:document][:nodes][0][:type]).to eq 'paragraph'
+        expect(raw[:document][:nodes][0][:nodes][0][:text]).to eq ''
+      end
+    end
   end
 end
