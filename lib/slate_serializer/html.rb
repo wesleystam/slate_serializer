@@ -18,10 +18,12 @@ module SlateSerializer
       'tr': 'tr',
       'td': 'td',
       'text': 'text',
-      'hr': 'hr'
+      'hr': 'hr',
+      'figure': 'figure',
+      'figcaption': 'figcaption'
     }.freeze
     # Default block types list
-    BLOCK_ELEMENTS = %w[hr img li p ol ul table tbody tr td].freeze
+    BLOCK_ELEMENTS = %w[figure figcaption hr img li p ol ul table tbody tr td].freeze
     # Default inline types list
     INLINE_ELEMENTS = %w[a].freeze
     # Default mark types list
@@ -69,8 +71,6 @@ module SlateSerializer
         type = convert_name_to_type(element)
 
         nodes = element.children.flat_map do |child|
-          next if child.text.strip == '' && child.type == 'img'
-
           if block?(child)
             element_to_node(child)
           elsif inline?(child)
@@ -82,7 +82,7 @@ module SlateSerializer
           end
         end.compact
 
-        nodes << { marks: [], object: 'text', text: '' } if nodes.empty?
+        nodes << { marks: [], object: 'text', text: '' } if nodes.empty? && type != 'image'
 
         {
           data: element.attributes.each_with_object({}) { |a, h| h[a[1].name] = a[1].value },

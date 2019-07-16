@@ -111,14 +111,21 @@ RSpec.describe SlateSerializer::Html do
       html = %(
       <p>In onderstaand schema is het volledige kwalificatieproces beschreven, inclusief de bijbehorende termijnen/deadlines.&nbsp;</p>
       <div><img src="https://https://via.placeholder.com/150.png"></div>
+      <figure>
+        <img src="https://https://via.placeholder.com/150.png">
+        <figcaption>Caption of image</figcaption>
+      </figure>
       )
 
       it 'converts the html into raw' do
         raw = described_class.deserializer(html)
 
-        expect(raw[:document][:nodes].length).to be 2
+        expect(raw[:document][:nodes].length).to be 3
         expect(raw[:document][:nodes][1][:type]).to eq 'paragraph'
         expect(raw[:document][:nodes][1][:nodes][0][:type]).to eq 'image'
+        expect(raw[:document][:nodes][2][:type]).to eq 'figure'
+        expect(raw[:document][:nodes][2][:nodes][0][:type]).to eq 'image'
+        expect(raw[:document][:nodes][2][:nodes][1][:type]).to eq 'figcaption'
       end
     end
 
