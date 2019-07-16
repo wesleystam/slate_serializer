@@ -17,10 +17,11 @@ module SlateSerializer
       'tbody': 'tbody',
       'tr': 'tr',
       'td': 'td',
-      'text': 'text'
+      'text': 'text',
+      'hr': 'hr'
     }.freeze
     # Default block types list
-    BLOCK_ELEMENTS = %w[img li p ol ul table tbody tr td].freeze
+    BLOCK_ELEMENTS = %w[hr img li p ol ul table tbody tr td].freeze
     # Default inline types list
     INLINE_ELEMENTS = %w[a].freeze
     # Default mark types list

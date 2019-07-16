@@ -37,12 +37,13 @@ RSpec.describe SlateSerializer::Html do
     under-represented groups including women and racial and ethnic groups in
     senior positions in the organization;</li></ul>
     <p><strong>6.2.3.<em>1</em></strong></p>
+    <hr>
       )
 
       it 'converts the html into raw' do
         raw = described_class.deserializer(html)
 
-        expect(raw[:document][:nodes].length).to be 4
+        expect(raw[:document][:nodes].length).to be 5
         expect(raw[:document][:nodes][0][:type]).to eq 'paragraph'
         expect(raw[:document][:nodes][1][:type]).to eq 'paragraph'
         expect(raw[:document][:nodes][2][:type]).to eq 'unordered-list'
@@ -56,6 +57,8 @@ RSpec.describe SlateSerializer::Html do
         expect(raw[:document][:nodes][3][:nodes][0][:object]).to eq 'text'
         expect(raw[:document][:nodes][3][:nodes][0][:marks][0][:type]).to eq 'bold'
         expect(raw[:document][:nodes][3][:nodes][1][:marks][1][:type]).to eq 'italic'
+
+        expect(raw[:document][:nodes][4][:type]).to eq 'hr'
       end
     end
 
