@@ -10,6 +10,7 @@ module SlateSerializer
       'li': 'list-item',
       'p': 'paragraph',
       'div': 'paragraph',
+      'ol1': 'ordered-list',
       'ola': 'alpha-ordered-list',
       'ol': 'ordered-list',
       'ul': 'unordered-list',
