@@ -27,7 +27,7 @@ To convert between plain text and Slate document use:
 
 To convert between html and Slate document use:
 
-    $ SlateSerializer::Html.deserializer(text) => { document: {...}}
+    $ SlateSerializer::Html.deserializer(html) => { document: {...}}
 
 ## Contributing
 
