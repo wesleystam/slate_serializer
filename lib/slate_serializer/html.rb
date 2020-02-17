@@ -35,7 +35,7 @@ module SlateSerializer
     }.freeze
 
     class << self
-      # Convert html to a Slare document
+      # Convert html to a Slate document
       #
       # @param html format [String] the HTML
       # @param options [Hash]
@@ -62,6 +62,16 @@ module SlateSerializer
             nodes: nodes
           }
         }
+      end
+
+      # Convert html to a Slate document
+      #
+      # @param value format [Hash] the Slate document
+      # @return [String] plain text version of the Slate documnent
+      def serializer(value)
+        return '' unless value.key?(:document)
+
+        serialize_node(value[:document])
       end
 
       private
@@ -176,6 +186,26 @@ module SlateSerializer
             ]
           }
         }
+      end
+
+      def serialize_node(node)
+        if node[:object] == 'document'
+          node[:nodes].map { |n| serialize_node(n) }.join
+        elsif node[:object] == 'block'
+          children = node[:nodes].map { |n| serialize_node(n) }.join
+
+          element = ELEMENTS.find { |_, v| v == node[:type] }[0]
+          data = node[:data].map { |k, v| "#{k}=\"#{v}\"" }
+
+          if %i[ol1 ola].include?(element)
+            data << ["type=\"#{element.to_s[-1]}\""]
+            element = :ol
+          end
+
+          "<#{element}#{!data.empty? ? " #{data.join(' ')}" : ''}>#{children}</#{element}>"
+        else
+          node[:text]
+        end
       end
     end
   end

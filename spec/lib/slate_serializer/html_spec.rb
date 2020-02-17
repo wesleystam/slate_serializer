@@ -143,4 +143,70 @@ RSpec.describe SlateSerializer::Html do
       end
     end
   end
+
+  describe '.serializer' do
+    context 'when the value does not have a document key' do
+      it 'return an empty string' do
+        expect(described_class.serializer({})).to eq ''
+      end
+    end
+
+    context 'when the value holds an Slate Value' do
+      it 'converts the Slate value to plain text' do
+        value = {
+          document: {
+            object: 'document',
+            nodes: [
+              {
+                data: {},
+                object: 'block',
+                type: 'paragraph',
+                nodes: [
+                  { text: 'Some text and lalala' },
+                  {
+                    data: {
+                      src: 'https://via.placeholder.com/150.png'
+                    },
+                    type: 'image',
+                    nodes: [],
+                    object: 'block'
+                  }
+                ]
+              },
+              {
+                data: {},
+                object: 'block',
+                type: 'paragraph',
+                nodes: [
+                  { text: 'Next line' }
+                ]
+              },
+              {
+                data: {},
+                object: 'block',
+                type: 'alpha-ordered-list',
+                nodes: [
+                  {
+                    data: {},
+                    object: 'block',
+                    type: 'list-item',
+                    nodes: [
+                      {
+                        text: 'list item',
+                        marks: [],
+                        object: 'text'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+
+        html = described_class.serializer(value)
+        expect(html).to eq '<p>Some text and lalala<img src="https://via.placeholder.com/150.png"></img></p><p>Next line</p><ol type="a"><li>list item</li></ol>'
+      end
+    end
+  end
 end
