@@ -143,7 +143,7 @@ module SlateSerializer
 
       def convert_name_to_type(element)
         type = [element.name, element.attributes['type']&.value].compact.join
-        elements[type.to_sym]
+        elements[type.to_sym] || elements[:p]
       end
 
       def convert_name_to_mark(name)
