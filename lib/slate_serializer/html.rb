@@ -71,6 +71,8 @@ module SlateSerializer
       def serializer(value)
         return '' unless value.key?(:document)
 
+        self.mark_elements = MARK_ELEMENTS.invert
+
         serialize_node(value[:document])
       end
 
@@ -121,7 +123,7 @@ module SlateSerializer
         nodes = []
         mark = convert_name_to_mark(element.name)
 
-        if element.class == Nokogiri::XML::Element
+        if element.instance_of?(Nokogiri::XML::Element)
           element.children.each do |child|
             nodes << element_to_text(child, mark)
           end
@@ -189,9 +191,10 @@ module SlateSerializer
       end
 
       def serialize_node(node)
-        if node[:object] == 'document'
+        case node[:object]
+        when 'document'
           node[:nodes].map { |n| serialize_node(n) }.join
-        elsif node[:object] == 'block'
+        when 'block'
           children = node[:nodes].map { |n| serialize_node(n) }.join
 
           element = ELEMENTS.find { |_, v| v == node[:type] }[0]
@@ -204,7 +207,13 @@ module SlateSerializer
 
           "<#{element}#{!data.empty? ? " #{data.join(' ')}" : ''}>#{children}</#{element}>"
         else
-          node[:text]
+          if node[:marks].nil? || node[:marks].empty?
+            node[:text]
+          else
+            elements = node[:marks].map { |m| mark_elements[m[:type]] }
+            marks = elements.map { |m| "<#{m}>" }.join
+            "#{marks}#{node[:text]}#{elements.map { |m| "</#{m}>" }.join}"
+          end
         end
       end
     end

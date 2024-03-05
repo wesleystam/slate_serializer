@@ -178,7 +178,8 @@ RSpec.describe SlateSerializer::Html do
                 object: 'block',
                 type: 'paragraph',
                 nodes: [
-                  { text: 'Next line' }
+                  { text: 'Next line ', object: 'text' },
+                  { text: 'bold', marks: [{ type: 'bold' }], object: 'text' }
                 ]
               },
               {
@@ -205,7 +206,7 @@ RSpec.describe SlateSerializer::Html do
         }
 
         html = described_class.serializer(value)
-        expect(html).to eq '<p>Some text and lalala<img src="https://via.placeholder.com/150.png"></img></p><p>Next line</p><ol type="a"><li>list item</li></ol>'
+        expect(html).to eq '<p>Some text and lalala<img src="https://via.placeholder.com/150.png"></img></p><p>Next line <strong>bold</strong></p><ol type="a"><li>list item</li></ol>'
       end
     end
   end
